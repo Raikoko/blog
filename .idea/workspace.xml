@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c988a9ae-2160-4cc8-832e-74ab25772c73" name="Default Changelist" comment="" />
+    <list default="true" id="c988a9ae-2160-4cc8-832e-74ab25772c73" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Blog/BlogController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Blog/BlogController.php" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -159,7 +162,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1576287878472</updated>
-      <workItem from="1576287879811" duration="18841000" />
+      <workItem from="1576287879811" duration="22428000" />
     </task>
     <servers />
   </component>
