@@ -22,6 +22,7 @@ Route::get('/blog_detail/{id}','blog\BlogController@detail');
 Route::get('/blog_create_form',function (){
     return view('blog.blog_form');
 });
+
 Route::post('/blog_create','blog\BlogController@create');
 
 Route::get('/blog_edit_form/{blog}',function ($blog){
