@@ -18,10 +18,18 @@ class BlogController extends Controller
     }
 
 
-    public function index(){
-        $blogs = Blog::getBlogs();
-        return view('blog.index',['blogs'=>$blogs]);
+    public function getIndex(){
+
+        $limit = request()->input('limit');
+        $blogs = Blog::getBlogs($limit);
+
+        $data['code'] = 0;
+        $data['msg'] = '成功';
+        $data['count'] = $blogs->total();
+        $data['data'] = $blogs->items();
+        return $data;
     }
+
 
 
     public function create(){
@@ -60,14 +68,19 @@ class BlogController extends Controller
         $id = request()->input('id');
         $res = Blog::edit($id,$title,$text);
         if ($res){
-            return redirect('blog2');
+            return ['code'=>0,'msg'=>'成功'];
         }
+        return ['code'=>1,'msg'=>'失败'];
     }
 
-    public function del($id){
+    public function del(){
+        $id = request()->input('id');
         $res = Blog::del($id);
         if ($res){
-            return redirect('blog2');
+            return ['code'=>0,'msg'=>'成功'];
         }
+        return ['code'=>1,'msg'=>'失败'];
     }
+
+
 }

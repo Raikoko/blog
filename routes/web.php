@@ -15,22 +15,18 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/blog2','blog\BlogController@index');
 
 Route::get('/blog_detail/{id}','blog\BlogController@detail');
-
 Route::get('/blog_create_form',function (){
     return view('blog.blog_form');
 });
 
-Route::post('/blog_create','blog\BlogController@create');
 
-Route::get('/blog_edit_form/{blog}',function ($blog){
-    return view('blog.blog_form',['blog'=>$blog]);
-});
-
-Route::post('/blog_edit','blog\BlogController@edit');
-Route::get('/blog_del/{id}','blog\BlogController@del');
+Route::get('/blog2',function (){return view('blog.index');});   //博客页面
+Route::get('/blog/getIndex','blog\BlogController@getIndex'); //获取博客列表
+Route::post('/blog_create','blog\BlogController@create');   //创建
+Route::post('/blog/blog_edit','blog\BlogController@edit');  //编辑博客
+Route::post('/blog/blog_del','blog\BlogController@del');    //删除博客
 
 
 

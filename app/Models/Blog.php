@@ -12,8 +12,8 @@ class Blog extends Model
     /**
      * 获取博客列表
      */
-    public static function getBlogs(){
-        return DB::table('blogs')->get();
+    public static function getBlogs($limit){
+        return DB::table('blogs')->paginate($limit);
     }
 
     public static function getDetail($id){
