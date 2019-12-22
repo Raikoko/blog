@@ -28,5 +28,12 @@ Route::post('/blog_create','blog\BlogController@create');   //创建
 Route::post('/blog/blog_edit','blog\BlogController@edit');  //编辑博客
 Route::post('/blog/blog_del','blog\BlogController@del');    //删除博客
 
+Route::get('/admin/login','admin\AdminController@index');   //登录页面
+Route::get('/admin/register_index','admin\AdminController@register_index');   //注册页面
+Route::post('/admin/register_check','admin\AdminController@register_check');   //用户名验证
+Route::post('/admin/register','admin\AdminController@register');   //注册
+
+
+
 
 
