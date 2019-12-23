@@ -32,6 +32,17 @@ Route::get('/admin/login','admin\AdminController@index');   //登录页面
 Route::get('/admin/register_index','admin\AdminController@register_index');   //注册页面
 Route::post('/admin/register_check','admin\AdminController@register_check');   //用户名验证
 Route::post('/admin/register','admin\AdminController@register');   //注册
+Route::post('/admin/do_login','admin\AdminController@login');   //登录
+
+Route::get('/get_captcha','admin\AdminController@getCaptcha');   //获取验证码
+
+
+
+Route::get('/admin/index',function (){return view('admin.index');});   //管理员后台首页
+
+
+
+
 
 
 

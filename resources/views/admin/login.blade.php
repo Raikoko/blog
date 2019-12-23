@@ -26,8 +26,12 @@
         </div>
 
         <div class="layui-input-inline">
+            <input class="layui-input" type="hidden" id="key" name="code_key" required >
             <input type="text" name="code" required lay-verify="required" placeholder="验证码" autocomplete="off"
                    class="layui-input">
+            <div style="padding-top: 10px;">
+                <img id="code_img" src="">
+            </div>
         </div>
 
         <div class="layui-input-inline login-btn">
@@ -45,22 +49,41 @@
 </div>
 </body>
 <script>
-    layui.use(['layer','table'],function () {
-        let table = layui.table;
+    layui.use(['layer','form'],function () {
         let layer = layui.layer;
         let form = layui.form;
         let $ = layui.$;
 
+        getCodeImg();
+
         form.on('submit(login)', function(data){
-            $.post('/admin/login',data.field,function (res) {
-                layer.msg(res.msg,{time:2000});
+            $.post('/admin/do_login',data.field,function (res) {
+                layer.msg(res.msg);
+                if (res.code == 0){
+                    setTimeout(function () {
+                        location.href = '{{url('admin/index')}}';
+                    },2000);
+                }
             });
-            layer.close(index);
-            table.reload('table-blog');
             return false;
         });
 
+        $('#code_img').on('click',function () {
+            getCodeImg();
+        });
+
+        function getCodeImg() {
+            $.get('/get_captcha',function (res) {
+                if (res.code == 0){
+                    $("#key").val(res.data.img_url.key);
+                    $("#code_img").attr('src',res.data.img_url.img);
+                }
+            });
+        }
+
     });
+
+
 
 </script>
 

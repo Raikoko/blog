@@ -9,12 +9,30 @@
 namespace App\Models;
 
 
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Model
+class User extends Authenticatable implements JWTSubject
 {
+    use Notifiable;
+
+    public function getJWTCustomClaims()
+    {
+        // TODO: Implement getJWTCustomClaims() method.
+        return [];
+    }
+
+    public function getJWTIdentifier()
+    {
+        // TODO: Implement getJWTIdentifier() method.
+        return $this->getKey();
+    }
+
 
     const role_admin = 1;   //管理员
+
 
     public static function create($username,$password){
         $time = self::getNowDateTime();
@@ -49,13 +67,19 @@ class User extends Model
     }
 
 
+    public static function getUserByEmail($email){
+        return User::where('email',$email)->first();
+    }
+
+
     public static function getNowDateTime(){
         return self::getDateTime(time());
     }
 
     /**
      * 获取格式化的时间
-     * @param int $time
+     * @param $time
+     * @return false|string
      */
     public static function getDateTime($time){
         return date('Y-m-d H:i:s',$time);
