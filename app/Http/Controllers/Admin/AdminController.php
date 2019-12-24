@@ -11,15 +11,22 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use mysql_xdevapi\Exception;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use function Psy\debug;
 
 class AdminController extends Controller
 {
-
     /**
      * 登录首页
      */
     public function index(){
         return view('admin.login');
+    }
+
+    public function admin_index(){
+        return view('admin.index');
     }
 
     /**
@@ -31,17 +38,47 @@ class AdminController extends Controller
         $code = request()->input('code');
         $code_key = request()->input('code_key');
 
-        $check_res = self::login_check($username,$password,$code,$code_key);
+//        $check_code = self::check_code($code,$code_key);
+//        if (!$check_code) {
+//            return $this->error('1','验证码不正确');
+//        }
 
+        $login_type = config('debug.login_type');
+
+        if ($login_type == login_normal){
+            return self::login_normal($username,$password);
+        }
+        if ($login_type == login_auth){
+            $check_data = ['username'=>$username,'password'=>$password];
+            return self::login_auth($check_data);
+        }
+
+    }
+
+
+    public static function login_normal($username,$password){
+        $check_res = self::login_check($username,$password);
         if ($check_res['code'] == 0){
             //生成token，返回用户信息
             $data['token'] = self::getToken($username,$password);
             $user_info = User::getUserByName($username);
             $data['user_info']['username'] = $user_info['username'];
             $data['user_info']['role'] = $user_info['role'];
-            return ['code'=>0,'msg'=>'登录成功','data'=>$data];
+            return ['code'=>0,'msg'=>'success','data'=>$data];
         }
         return $check_res;
+    }
+
+
+    public static function login_auth($check_data){
+        if (! $token = auth('api')->attempt($check_data)){
+            return response()->json(['code'=>1,'msg'=>'error']);
+        }
+        $data['token'] = $token;
+        $user_info = User::getUserByName($check_data['username']);
+        $data['user_info']['username'] = $user_info['username'];
+        $data['user_info']['role'] = $user_info['role'];
+        return response()->json(['code'=>0,'msg'=>'success','data'=>$data]);
     }
 
     /**
@@ -65,15 +102,11 @@ class AdminController extends Controller
     /**
      * 登录验证
      */
-    public static function login_check($username,$password,$code,$code_key){
+    public static function login_check($username,$password){
 
         $check_pwd = self::check_pwd($username,$password);
-        $check_code = self::check_code($code,$code_key);
         if (!$check_pwd){
             return ['code'=>1,'msg'=>'用户名或密码不正确'];
-        }
-        if (!$check_code) {
-            return ['code'=>1,'msg'=>'验证码不正确'];
         }
         return ['code'=>0,'msg'=>'成功'];
     }
@@ -90,11 +123,7 @@ class AdminController extends Controller
         if (empty($user_info)){
             return false;
         }
-        $password_encode = User::encode_pasword($password);
-        if (strcmp($user_info['password'],$password_encode) == 0){
-            return true;
-        }
-        return false;
+        return Hash::check($password,$user_info['password']);
     }
 
     /**

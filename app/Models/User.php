@@ -12,22 +12,23 @@ namespace App\Models;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
 {
     use Notifiable;
 
-    public function getJWTCustomClaims()
-    {
-        // TODO: Implement getJWTCustomClaims() method.
-        return [];
-    }
-
     public function getJWTIdentifier()
     {
         // TODO: Implement getJWTIdentifier() method.
         return $this->getKey();
+    }
+
+    public function getJWTCustomClaims()
+    {
+        // TODO: Implement getJWTCustomClaims() method.
+        return [];
     }
 
 
@@ -36,7 +37,7 @@ class User extends Authenticatable implements JWTSubject
 
     public static function create($username,$password){
         $time = self::getNowDateTime();
-        $password_encode = self::encode_pasword($password);
+        $password_encode = self::encode_password($password);
 
         $insert = [
             'username'=>$username,
@@ -53,8 +54,8 @@ class User extends Authenticatable implements JWTSubject
      * @param $password
      * @return string
      */
-    public static function encode_pasword($password){
-        return md5($password);
+    public static function encode_password($password){
+        return Hash::make($password);
     }
 
     /**

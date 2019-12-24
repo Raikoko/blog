@@ -60,6 +60,12 @@
             $.post('/admin/do_login',data.field,function (res) {
                 layer.msg(res.msg);
                 if (res.code == 0){
+                    layui.data('user_info',null);
+                    layui.data('user_info',{
+                        key:'data',
+                        value:res.data
+                    });
+                    let user_info = layui.data('user_info');
                     setTimeout(function () {
                         location.href = '{{url('admin/index')}}';
                     },2000);
