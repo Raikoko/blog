@@ -1,17 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
 
-    <title>登录页</title>
-    <link href="{{asset('layui/css/layui.css')}}" rel="stylesheet">
-    <link href="{{asset('css/admin.css')}}" rel="stylesheet">
-    <script type="text/javascript" src="{{asset('layui/layui.js')}}"></script>
 
-</head>
+@extends('layouts.base')
 
+@section('title')
+    登录页
+@endsection
+@section('content')
 <body>
-
 <div class="login-main">
     <header class="layui-elip">登录</header>
     <form class="layui-form">
@@ -65,9 +60,19 @@
                         key:'data',
                         value:res.data
                     });
-                    let user_info = layui.data('user_info');
+                    {{--let user_info = layui.data('user_info');--}}
+                    {{--$.ajax({--}}
+                    {{--    type:'POST',--}}
+                    {{--    url:'{{url('admin/index2')}}',--}}
+                    {{--    headers:{'Authorization':'Bearer '+user_info.data.token},--}}
+                    {{--    data:{token:user_info.data.token},--}}
+                    {{--    success:function (res) {--}}
+                    {{--        window.location.href = res;--}}
+                    {{--    }--}}
+                    {{--});--}}
+
                     setTimeout(function () {
-                        location.href = '{{url('admin/index')}}';
+                            window.location.href = '{{url('admin/index')}}';
                     },2000);
                 }
             });
@@ -92,6 +97,7 @@
 
 
 </script>
+@endsection
 
-</html>
+
 

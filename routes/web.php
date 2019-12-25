@@ -22,7 +22,7 @@ Route::get('/blog_create_form',function (){
 });
 
 
-Route::get('/blog2',function (){return view('blog.index');});   //博客页面
+Route::get('/blog2',function (){return view('blog.index');})->middleware('auth:api');   //博客页面
 Route::get('/blog/getIndex','blog\BlogController@getIndex'); //获取博客列表
 Route::post('/blog_create','blog\BlogController@create');   //创建
 Route::post('/blog/blog_edit','blog\BlogController@edit');  //编辑博客
@@ -39,6 +39,9 @@ Route::get('/get_captcha','admin\AdminController@getCaptcha');   //获取验证�
 
 
 Route::get('/admin/index','admin\AdminController@admin_index');   //管理员后台首页
+
+Route::post('/admin/index2','admin\AdminController@admin_index2');   //管理员后台首页
+
 
 
 

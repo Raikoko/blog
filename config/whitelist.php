@@ -10,6 +10,7 @@ return [
         '/admin/register_check',
         '/admin/register',
         '/get_captcha',
+        '/admin/index'
     ],
     'ip'=>[
 

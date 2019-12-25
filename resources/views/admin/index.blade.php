@@ -1,12 +1,10 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>layout 后台大布局 - Layui</title>
-    <link href="{{asset('layui/css/layui.css')}}" rel="stylesheet">
-    <script type="text/javascript" src="{{asset('layui/layui.js')}}"></script>
-</head>
+@extends('layouts.base')
+
+@section('title')
+    后台首页
+@endsection
+@section('content')
+
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header">
@@ -81,9 +79,15 @@
 <script>
 
     layui.use('element', function(){
-        var element = layui.element;
+        let element = layui.element;
+        let $ = layui.$;
+
+        if ($.isEmptyObject(layui.data('user_info'))){
+            window.location.href = '{{url('admin/login')}}';
+        }
 
     });
 </script>
 </body>
-</html>
+
+@endsection

@@ -17,7 +17,7 @@ class Controller extends BaseController
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
 
-    public function __construct(Request $request)
+    public function __construct()
     {
 
         $request_url = request()->getRequestUri();
