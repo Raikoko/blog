@@ -25,16 +25,16 @@
         </ul>
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">
-                <a href="javascript:;">
-                    <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
-                    贤心
+                <a href="javascript:;" id="user">
+{{--                    <img src="http://t.cn/RCzsdCq" class="layui-nav-img" >--}}
+
                 </a>
                 <dl class="layui-nav-child">
                     <dd><a href="">基本资料</a></dd>
                     <dd><a href="">安全设置</a></dd>
                 </dl>
             </li>
-            <li class="layui-nav-item"><a href="">退了</a></li>
+            <li class="layui-nav-item" id="logout"><a style="cursor: pointer">退出</a></li>
         </ul>
     </div>
 
@@ -78,13 +78,41 @@
 
 <script>
 
-    layui.use('element', function(){
+    layui.use(['element','layer'], function(){
         let element = layui.element;
         let $ = layui.$;
+        let layer = layui.layer;
+
 
         if ($.isEmptyObject(layui.data('user_info'))){
             window.location.href = '{{url('admin/login')}}';
         }
+        let user_info = layui.data('user_info').data.user_info;
+
+        //写入用户信息
+        let html = '<img src="http://t.cn/RCzsdCq" class="layui-nav-img" >'+user_info.username;
+        $('#user').append(html);
+
+        $('#logout').on('click',function () {
+            layer.confirm('确认退出',function (index) {
+                let user_info = layui.data('user_info');
+                $.ajax({
+                    type:'POST',
+                    url:'{{url('admin/logout')}}',
+                    headers:{'Authorization':'Bearer '+user_info.data.token},
+                    data:{token:user_info.data.token},
+                    success:function (res) {
+                        layer.msg(res.msg);
+                        layer.close(index);
+                        if(res.code == 0){
+                            layui.data('user_info',null);
+                            window.location.href = '{{url('admin/login')}}';
+                        }
+                    }
+                });
+
+            })
+        })
 
     });
 </script>

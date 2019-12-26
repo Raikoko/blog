@@ -33,14 +33,11 @@ Route::get('/admin/register_index','admin\AdminController@register_index');   //
 Route::post('/admin/register_check','admin\AdminController@register_check');   //用户名验证
 Route::post('/admin/register','admin\AdminController@register');   //注册
 Route::post('/admin/do_login','admin\AdminController@login');   //登录
+Route::post('/admin/logout','admin\AdminController@logout');   //退出登录
+Route::get('/admin/index','admin\AdminController@admin_index');   //管理员后台首页
 
 Route::get('/get_captcha','admin\AdminController@getCaptcha');   //获取验证码
 
-
-
-Route::get('/admin/index','admin\AdminController@admin_index');   //管理员后台首页
-
-Route::post('/admin/index2','admin\AdminController@admin_index2');   //管理员后台首页
 
 
 

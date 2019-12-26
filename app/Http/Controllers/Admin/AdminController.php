@@ -56,6 +56,9 @@ class AdminController extends Controller
     }
 
 
+    /**
+     * 普通登录
+     */
     public static function login_normal($username,$password){
         $check_res = self::login_check($username,$password);
         if ($check_res['code'] == 0){
@@ -70,6 +73,9 @@ class AdminController extends Controller
     }
 
 
+    /**
+     * auth验证登录
+     */
     public static function login_auth($check_data){
         if (! $token = auth('api')->attempt($check_data)){
             return response()->json(['code'=>1,'msg'=>'error']);
