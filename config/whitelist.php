@@ -10,7 +10,8 @@ return [
         '/admin/register_check',
         '/admin/register',
         '/get_captcha',
-        '/admin/index'
+        '/admin/index',
+        '/send_msg'
     ],
     'ip'=>[
 

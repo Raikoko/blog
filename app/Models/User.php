@@ -67,6 +67,15 @@ class User extends Authenticatable implements JWTSubject
         return User::where('username',$username)->first();
     }
 
+    /**
+     * 手机号获取用户
+     * @param $phone
+     * @return mixed
+     */
+    public static function getUserByPhone($phone){
+        return User::where('phone',$phone)->first();
+    }
+
 
     public static function getUserByEmail($email){
         return User::where('email',$email)->first();

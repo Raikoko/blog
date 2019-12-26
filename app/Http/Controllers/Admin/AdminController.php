@@ -10,6 +10,7 @@ namespace App\Http\Controllers\Admin;
 
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\MessageController;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use mysql_xdevapi\Exception;
@@ -38,23 +39,59 @@ class AdminController extends Controller
         $code = request()->input('code');
         $code_key = request()->input('code_key');
 
-//        $check_code = self::check_code($code,$code_key);
-//        if (!$check_code) {
-//            return $this->error('1','验证码不正确');
-//        }
+        $login_type= request()->input('type');
+        $phone= request()->input('phone');
+
+        //手机号登录
+        if ($login_type == 'phone'){
+            return self::login_phone($phone,$code);
+        }
+
+        $check_code = self::check_code($code,$code_key);
+        if (!$check_code) {
+            return $this->error('1','验证码不正确');
+        }
 
         $login_type = config('debug.login_type');
-
-        if ($login_type == login_normal){
+        if ($login_type == login_check_normal){
             return self::login_normal($username,$password);
         }
-        if ($login_type == login_auth){
+        if ($login_type == login_check_auth){
             $check_data = ['username'=>$username,'password'=>$password];
             return self::login_auth($check_data);
         }
 
     }
 
+    /**
+     * 手机验证码登录
+     * @param $phone
+     * @param $code
+     * @return bool
+     */
+    public static function login_phone($phone,$code){
+
+        $code_redis = MessageController::getCode($phone);
+        //调试模式默认验证码为 666666
+        if (config('debug.debug')){
+            $code_redis= 666666;
+        }
+        if ($code != $code_redis){
+            return response()->json(['code'=>1,'msg'=>'验证码不正确']);
+        }
+
+        //生成token，返回用户信息
+        $user_info = User::getUserByPhone($phone);
+        if (empty($user_info)){
+            return response()->json(['code'=>1,'msg'=>'手机号不存在']);
+        }
+        $data['token'] = self::createToken($user_info);
+        $data['user_info']['username'] = $user_info['username'];
+        $data['user_info']['role'] = $user_info['role'];
+
+        return response()->json(['code'=>0,'msg'=>'success','data'=>$data]);
+
+    }
 
     /**
      * 普通登录
@@ -135,6 +172,7 @@ class AdminController extends Controller
     /**
      * 验证码验证
      * @param $code
+     * @param $code_key
      * @return bool
      */
     public static function check_code($code,$code_key){

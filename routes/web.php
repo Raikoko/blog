@@ -38,7 +38,10 @@ Route::get('/admin/index','admin\AdminController@admin_index');   //管理员后
 
 Route::get('/get_captcha','admin\AdminController@getCaptcha');   //获取验证码
 
-
+Route::get('/admin/login_phone',function (){
+    return view('admin.login_phone');
+});   //登录页面
+Route::post('/send_msg','MessageController@send');   //发送短信验证码
 
 
 

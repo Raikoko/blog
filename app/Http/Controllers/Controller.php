@@ -63,7 +63,8 @@ class Controller extends BaseController
         if (!empty($token)){
             return $token;
         }
-        return self::createToken($username);
+        $user_info = User::getUserByName($username);
+        return self::createToken($user_info);
     }
 
     public static function checkTokenExist($username){
@@ -73,9 +74,7 @@ class Controller extends BaseController
     /**
      * 创建token
      */
-    public static function createToken($username){
-
-        $user_info = User::getUserByName($username);
+    public static function createToken($user_info){
         $token = JWTAuth::fromUser($user_info);
         return $token;
     }
