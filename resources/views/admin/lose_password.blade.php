@@ -3,17 +3,16 @@
 @extends('layouts.base')
 
 @section('title')
-    登录页
+    找回密码
 @endsection
 @section('content')
     <body>
     <div class="login-main">
-        <header class="layui-elip">手机号登录</header>
+        <header class="layui-elip">找回密码</header>
         <form class="layui-form">
             {{csrf_field()}}
             <div class="layui-input-inline">
-                <input type="text" id="phone" name="phone" required lay-verify="required" placeholder="手机号" autocomplete="off"
-                       class="layui-input">
+                <input type="text" id="phone" name="phone" required lay-verify="required" placeholder="手机号" autocomplete="off" class="layui-input">
             </div>
             <div class="layui-form-item">
                 <div class="layui-inline" style="width: 70%;">
@@ -24,19 +23,10 @@
                 </div>
             </div>
             <div class="layui-input-inline login-btn">
-                <button lay-submit lay-filter="login" class="layui-btn">登录</button>
+                <button lay-submit lay-filter="login" class="layui-btn">找回密码</button>
             </div>
-
             <input class="layui-input" type="hidden" name="type" required lay-verify="required" autocomplete="off" value="phone">
-
             <hr/>
-            <!--<div class="layui-input-inline">
-                <button type="button" class="layui-btn layui-btn-primary">QQ登录</button>
-            </div>
-            <div class="layui-input-inline">
-                <button type="button" class="layui-btn layui-btn-normal">微信登录</button>
-            </div>-->
-            <p><a href="{{url('admin/register_index')}}" class="fl">立即注册</a><a href="javascript:;" class="fr">忘记密码？</a></p>
         </form>
     </div>
     </body>
@@ -50,13 +40,8 @@
                 $.post('/admin/do_login',data.field,function (res) {
                     layer.msg(res.msg);
                     if (res.code == 0){
-                        layui.data('user_info',null);
-                        layui.data('user_info',{
-                            key:'data',
-                            value:res.data
-                        });
                         setTimeout(function () {
-                            window.location.href = '{{url('admin/index')}}';
+                            window.location.href = 'reset_password/'+res.data.token;
                         },2000);
                     }
                 });

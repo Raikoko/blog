@@ -33,13 +33,22 @@
             <button lay-submit lay-filter="login" class="layui-btn">登录</button>
         </div>
         <hr/>
-        <!--<div class="layui-input-inline">
-            <button type="button" class="layui-btn layui-btn-primary">QQ登录</button>
-        </div>
+
         <div class="layui-input-inline">
-            <button type="button" class="layui-btn layui-btn-normal">微信登录</button>
-        </div>-->
-        <p><a href="{{url('admin/register_index')}}" class="fl">立即注册</a><a href="javascript:;" class="fr">忘记密码？</a></p>
+            <button type="button" class="layui-btn type layui-btn-normal" data-type="phone">手机号登录</button>
+        </div>
+
+        <div class="layui-input-inline">
+            <button type="button" class="layui-btn type layui-btn-primary" data-type="wechat">微信登录</button>
+        </div>
+
+        <div class="layui-input-inline">
+            <button type="button" class="layui-btn type layui-btn-warm" data-type="QQ">QQ登录</button>
+        </div>
+
+        <p><a href="{{url('admin/register_index')}}" class="fl">立即注册</a>
+            <a href="{{url('/admin/lose_password')}}" class="fr">忘记密码？</a>
+        </p>
     </form>
 </div>
 </body>
@@ -91,6 +100,29 @@
                 }
             });
         }
+
+
+        $('#code_img').on('click',function () {
+            getCodeImg();
+        });
+
+        //登录方式
+        let active = {
+            phone : function () {
+                window.location.href = "{{url('admin/login_phone')}}"
+            },
+            wechat : function () {
+                window.location.href = "{{url('admin/login_wechat')}}"
+            },
+            QQ : function () {
+                window.location.href = "{{url('admin/login_wechat')}}"
+            },
+        };
+
+        $('.layui-btn.type').on('click',function () {
+            let type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        })
 
     });
 

@@ -12,7 +12,10 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\MessageController;
 use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use mysql_xdevapi\Exception;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use function Psy\debug;
@@ -132,6 +135,39 @@ class AdminController extends Controller
         return ['code'=>0,'msg'=>'成功'];
     }
 
+
+    /**
+     * 找回密码
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function resetPassword(Request $request){
+
+        $data['password'] = $request->input('password');
+        $data['password_confirmation'] = $request->input('repassword');
+        //密码校验
+        $rules = [
+            'password'=>'required|between:6,7|confirmed',
+            'password_confirmation'=>'required|between:6,7',
+        ];
+
+        $messages = [
+            'required'=>'密码不能为空',
+            'between'=>'密码必须是6~20位之间',
+            'confirmed'=>'输入密码不一致',
+        ];
+
+        $validator = Validator::make($data,$rules,$messages);
+        if ($validator->fails()){
+            return $this->error(1,$validator->errors()->first());
+        }
+        $user = auth('api')->user();
+        $user->password = User::encode_password($data['password']);
+        if ($user->save()){
+            return $this->success();
+        }
+        return $this->error();
+    }
 
     /**
      * 获取图片验证码

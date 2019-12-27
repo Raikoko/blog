@@ -19,6 +19,9 @@ class User extends Authenticatable implements JWTSubject
 {
     use Notifiable;
 
+    const CREATED_AT = 'create_time';
+    const UPDATED_AT = 'update_time';
+
     public function getJWTIdentifier()
     {
         // TODO: Implement getJWTIdentifier() method.

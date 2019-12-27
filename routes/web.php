@@ -40,8 +40,20 @@ Route::get('/get_captcha','admin\AdminController@getCaptcha');   //获取验证�
 
 Route::get('/admin/login_phone',function (){
     return view('admin.login_phone');
-});   //登录页面
+});   //手机号登录页面
 Route::post('/send_msg','MessageController@send');   //发送短信验证码
+
+Route::get('/admin/lose_password',function (){
+    return view('admin.lose_password');
+});   //找回密码页面
+Route::get('/admin/reset_password/{token}',function (){
+    return view('admin.reset_password');
+});   //重新设置密码页面
+Route::post('/admin/reset','admin\AdminController@resetPassword');   //重新设置密码
+
+
+Route::get('/admin/login_wechat',function (){return view('admin.login_wechat');});   //微信登录页面
+
 
 
 
