@@ -9,6 +9,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Facades\Log;
 use Mews\Captcha\Facades\Captcha;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -23,6 +24,7 @@ class Controller extends BaseController
         $request_url = request()->getRequestUri();
         $whitelist_urls = config('whitelist.url');
         //不在白名单中，需要token验证
+        Log::info('请求路由:'.$request_url);
         if (!in_array($request_url,$whitelist_urls)){
             //token验证
 
@@ -30,19 +32,20 @@ class Controller extends BaseController
 
                 //获取token
 //            $token = request()->header('authorization');
-                $token = auth('api')->getToken();
-                if (is_null($token) || empty($token)){
-                    throw new ApiException('token不存在','401');
-                }
-                if (!JWTAuth::parseToken()->check()){
-                    throw new ApiException('token失效','401');
-                }
+//            var_dump($token);
+//                $token = auth('api')->getToken();
+//                if (is_null($token) || empty($token)){
+//                    throw new ApiException('token不存在','401');
+//                }
+//                if (!JWTAuth::parseToken()->check()){
+//                    throw new ApiException('token失效','401');
+//                }
                 //获取用户信息
-                $user= auth('api')->user();
+//                $user= auth('api')->user();
 //            $user = JWTAuth::parseToken()->toUser()->toArray();
-                if(!$user){
-                    throw new ApiException('用户不存在','401');
-                }
+//                if(!$user){
+//                    throw new ApiException('用户不存在','401');
+//                }
         }
     }
 

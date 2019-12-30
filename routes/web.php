@@ -54,7 +54,12 @@ Route::post('/admin/reset','admin\AdminController@resetPassword');   //重新设
 
 Route::get('/admin/login_wechat',function (){return view('admin.login_wechat');});   //微信登录页面
 
+Route::get('/common/oauth','common\WechatController@oauth');   //请求微信接口
+Route::get('/common/callback','common\WechatController@callback');   //微信接口回调地址
 
+Route::get('/common/test','common\WechatController@test');   //测试微信接口
+
+Route::get('/common/index','common\WechatController@index')->middleware('auth:api');   //测试微信页面
 
 
 

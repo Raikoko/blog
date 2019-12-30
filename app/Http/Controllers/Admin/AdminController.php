@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Laravel\Socialite\Facades\Socialite;
 use mysql_xdevapi\Exception;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use function Psy\debug;
@@ -37,6 +38,7 @@ class AdminController extends Controller
      * 登录
      */
     public function login(){
+
         $username = request()->input('account');
         $password = request()->input('password');
         $code = request()->input('code');
@@ -46,8 +48,9 @@ class AdminController extends Controller
         $phone= request()->input('phone');
 
         //手机号登录
-        if ($login_type == 'phone'){
-            return self::login_phone($phone,$code);
+        switch ($login_type){
+            case 'phone': return self::login_phone($phone,$code);
+            case 'wechat':return self::login_wechat();
         }
 
         $check_code = self::check_code($code,$code_key);
@@ -65,6 +68,17 @@ class AdminController extends Controller
         }
 
     }
+
+    /**
+     * 微信登录
+     */
+    public static function login_wechat(){
+
+        return true;
+    }
+
+
+
 
     /**
      * 手机验证码登录

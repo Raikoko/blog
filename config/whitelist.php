@@ -11,7 +11,10 @@ return [
         '/admin/register',
         '/get_captcha',
         '/admin/index',
-        '/send_msg'
+        '/send_msg',
+        '/common/oauth',
+        '/common/callback',
+        '/common/test',
     ],
     'ip'=>[
 

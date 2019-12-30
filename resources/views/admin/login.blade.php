@@ -28,7 +28,6 @@
                 <img id="code_img" src="">
             </div>
         </div>
-
         <div class="layui-input-inline login-btn">
             <button lay-submit lay-filter="login" class="layui-btn">登录</button>
         </div>
@@ -40,6 +39,7 @@
 
         <div class="layui-input-inline">
             <button type="button" class="layui-btn type layui-btn-primary" data-type="wechat">微信登录</button>
+{{--            <a href="{{url('/common/oauth')}}">微信登录</a>--}}
         </div>
 
         <div class="layui-input-inline">
@@ -112,7 +112,27 @@
                 window.location.href = "{{url('admin/login_phone')}}"
             },
             wechat : function () {
-                window.location.href = "{{url('admin/login_wechat')}}"
+                window.location.href = "{{url('/common/oauth')}}";
+                {{--let user_info = layui.data('user_info');--}}
+                {{--$.ajax({--}}
+                {{--    type:'GET',--}}
+                {{--    url:'{{url('/common/oauth')}}',--}}
+                {{--    success:function (res) {--}}
+                {{--        if (res.code == 0){--}}
+                {{--            layer.msg(res.msg);--}}
+                {{--            if (res.code == 0){--}}
+                {{--                layui.data('user_info',null);--}}
+                {{--                layui.data('user_info',{--}}
+                {{--                    key:'data',--}}
+                {{--                    value:res.data--}}
+                {{--                });--}}
+                {{--                setTimeout(function () {--}}
+                {{--                    window.location.href = '{{url('admin/index')}}';--}}
+                {{--                },2000);--}}
+                {{--            }--}}
+                {{--        }--}}
+                {{--    }--}}
+                {{--});--}}
             },
             QQ : function () {
                 window.location.href = "{{url('admin/login_wechat')}}"

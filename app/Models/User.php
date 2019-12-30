@@ -84,6 +84,10 @@ class User extends Authenticatable implements JWTSubject
         return User::where('email',$email)->first();
     }
 
+    public static function getUserByOpen($open_id){
+        return User::where('open_id',$open_id)->first();
+    }
+
 
     public static function getNowDateTime(){
         return self::getDateTime(time());

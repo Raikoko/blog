@@ -178,7 +178,8 @@ return [
 
         \Tymon\JWTAuth\Providers\LaravelServiceProvider::class,     //JWT
         \Mews\Captcha\CaptchaServiceProvider::class,    //验证码
-
+//        \Laravel\Socialite\SocialiteServiceProvider::class,  //OAuth认证
+        \SocialiteProviders\Manager\ServiceProvider::class,     //微信认证
 
     ],
 
@@ -233,8 +234,8 @@ return [
 
         'JWTAuth' => \Tymon\JWTAuth\Facades\JWTAuth::class,
         'JWTFactory' => \Tymon\JWTAuth\Facades\JWTFactory::class,
-        'Captcha'=>\Mews\Captcha\Facades\Captcha::class
-
+        'Captcha'=>\Mews\Captcha\Facades\Captcha::class,
+        'Socialite' =>\Laravel\Socialite\Facades\Socialite::class,
 
     ],
 
