@@ -56,10 +56,18 @@ Route::get('/admin/login_wechat',function (){return view('admin.login_wechat');}
 
 Route::get('/common/oauth','common\WechatController@oauth');   //请求微信接口
 Route::get('/common/callback','common\WechatController@callback');   //微信接口回调地址
-
 Route::get('/common/test','common\WechatController@test');   //测试微信接口
-
 Route::get('/common/index','common\WechatController@index');   //测试微信页面
+
+
+Route::get('/ali/pay_index','ali\AliPayController@payIndex');   //支付首页
+Route::get('/ali/pay_success','ali\AliPayController@paySuccess');   //支付宝支付成功后的回调页面
+Route::post('/ali/pay_notify','ali\AliPayController@payNotify');   //支付成功后的通知地址
+
+Route::post('/ali/aliPay','ali\AliPayController@aliPay');   //网页支付
+Route::post('/ali/aliPayScan','ali\AliPayController@aliPayScan');   //扫码支付
+
+
 
 
 

@@ -105,6 +105,10 @@
       <path value="$PROJECT_DIR$/vendor/laravel/socialite" />
       <path value="$PROJECT_DIR$/vendor/socialiteproviders/manager" />
       <path value="$PROJECT_DIR$/vendor/socialiteproviders/weixin" />
+      <path value="$PROJECT_DIR$/vendor/simplesoftwareio/simple-qrcode" />
+      <path value="$PROJECT_DIR$/vendor/yansongda/pay" />
+      <path value="$PROJECT_DIR$/vendor/yansongda/supports" />
+      <path value="$PROJECT_DIR$/vendor/bacon/bacon-qr-code" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.2" />

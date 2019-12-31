@@ -17,6 +17,13 @@ return [
         'common/test',
         'common/index',
 
+        'ali/pay_index',     //支付首页
+        'ali/pay_success',  //支付成功后的回调
+        'ali/pay_notify',  //支付成功后的通知
+
+        'ali/aliPayScan',   //扫码支付
+        'ali/aliPay',       //网页支付
+
     ],
     'ip'=>[
 
