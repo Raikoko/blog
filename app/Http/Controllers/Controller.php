@@ -21,31 +21,29 @@ class Controller extends BaseController
     public function __construct()
     {
 
-        $request_url = request()->getRequestUri();
+        $request_url = request()->path();   //路由前不带'/'
         $whitelist_urls = config('whitelist.url');
         //不在白名单中，需要token验证
-        Log::info('请求路由:'.$request_url);
+//        Log::info('请求路由:'.$request_url);
         if (!in_array($request_url,$whitelist_urls)){
             //token验证
-
 //            $this->middleware('auth:api', ['except' => ['login']]);   //中间件
-
                 //获取token
 //            $token = request()->header('authorization');
-//            var_dump($token);
-//                $token = auth('api')->getToken();
-//                if (is_null($token) || empty($token)){
-//                    throw new ApiException('token不存在','401');
-//                }
-//                if (!JWTAuth::parseToken()->check()){
-//                    throw new ApiException('token失效','401');
-//                }
+
+                $token = auth('api')->getToken();
+                if (is_null($token) || empty($token)){
+                    throw new ApiException('token不存在','401');
+                }
+                if (!JWTAuth::parseToken()->check()){
+                    throw new ApiException('token失效','401');
+                }
                 //获取用户信息
 //                $user= auth('api')->user();
-//            $user = JWTAuth::parseToken()->toUser()->toArray();
-//                if(!$user){
-//                    throw new ApiException('用户不存在','401');
-//                }
+            $user = JWTAuth::parseToken()->toUser()->toArray();
+                if(!$user){
+                    throw new ApiException('用户不存在','401');
+                }
         }
     }
 

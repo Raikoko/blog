@@ -1,10 +1,10 @@
+
 @extends('layouts.base')
 
 @section('title')
     张家犬请滚进来
 @endsection
 @section('content')
-
     <body class="layui-layout-body">
     <div class="login-main">
         <header class="layui-elip">欢迎来到张家犬的小窝</header>
@@ -15,6 +15,11 @@
             <hr/>
         </form>
     </div>
+    @if(!empty(session('user_info')))
+        <script>
+            layui.layer.msg('登录成功');
+        </script>
+    @endif
 
     <script>
         layui.use(['element','layer'], function(){
@@ -22,13 +27,9 @@
             let $ = layui.$;
             let layer = layui.layer;
             let user_info = layui.data('user_info').data.user_info;
-
-            //写入用户信息
-            let html = '<img src="http://t.cn/RCzsdCq" class="layui-nav-img" >'+user_info.username;
-            $('#user').append(html);
-
         });
     </script>
     </body>
 
 @endsection
+

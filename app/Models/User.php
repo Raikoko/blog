@@ -52,6 +52,19 @@ class User extends Authenticatable implements JWTSubject
         return DB::table('users')->insert($insert);
     }
 
+    public static function createUserByOpen($username,$open_id){
+        $time = self::getNowDateTime();
+
+        $insert = [
+            'username'=>$username,
+            'role'=>self::role_admin,
+            'open_id'=>$open_id,
+            'create_time'=>$time,
+            'update_time'=>$time
+        ];
+        return DB::table('users')->insert($insert);
+    }
+
     /**
      * 密码加密
      * @param $password

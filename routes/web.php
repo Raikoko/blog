@@ -59,7 +59,7 @@ Route::get('/common/callback','common\WechatController@callback');   //微信接
 
 Route::get('/common/test','common\WechatController@test');   //测试微信接口
 
-Route::get('/common/index','common\WechatController@index')->middleware('auth:api');   //测试微信页面
+Route::get('/common/index','common\WechatController@index');   //测试微信页面
 
 
 

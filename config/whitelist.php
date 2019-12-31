@@ -4,17 +4,19 @@
 return [
 
     'url'=>[
-        '/admin/login',
-        '/admin/do_login',
-        '/admin/register_index',
-        '/admin/register_check',
-        '/admin/register',
-        '/get_captcha',
-        '/admin/index',
-        '/send_msg',
-        '/common/oauth',
-        '/common/callback',
-        '/common/test',
+        'admin/login',
+        'admin/do_login',
+        'admin/register_index',
+        'admin/register_check',
+        'admin/register',
+        'get_captcha',
+        'admin/index',
+        'send_msg',
+        'common/oauth',
+        'common/callback',
+        'common/test',
+        'common/index',
+
     ],
     'ip'=>[
 

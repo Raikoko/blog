@@ -15,8 +15,6 @@ class WechatController extends Controller
 {
 
     public function index(){
-        $token = request()->header('authorization');
-        var_dump($token);
         return view('admin.wechat');
     }
 
@@ -44,20 +42,16 @@ class WechatController extends Controller
         }
         $user_info = User::getUserByOpen($user_data->user['openid']);
         if (empty($user_info)){
-            return $this->error(1,'用户不存在');
+            User::createUserByOpen($user_data->user['nickname'],$user_data->user['openid']);
+//            return $this->error(1,'用户不存在');
         }
         //生成token，跳转到后台首页
         $data['token'] = self::createToken($user_info);
         $data['user_info']['username'] = $user_info['username'];
         $data['user_info']['role'] = $user_info['role'];
-
-
-        return redirect(url('/common/index'))->header('Authorization','Bearer '.$data['token']);
-
-        return redirect()->to('/common/index')->header('Authorization','Bearer '.$data['token']);
-
-        return redirect()->to('/common/index')->withHeaders(['Authorization'=>'Bearer '.$data['token']]);
-        return $this->success(0,$data);
+        //重定向并存储session
+        return redirect()->to('/common/index')->with('user_info',$data);
+//        return redirect()->to('/common/index')->header('Authorization','Bearer '.$data['token']);
 
     }
 
