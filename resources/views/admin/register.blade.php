@@ -1,17 +1,14 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    {{--<meta name="renderer" content="webkit">--}}
-    {{--<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">--}}
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>注册页</title>
-    <link href="{{asset('layui/css/layui.css')}}" rel="stylesheet">
-    <link href="{{asset('css/admin.css')}}" rel="stylesheet">
-    <script type="text/javascript" src="{{asset('layui/layui.js')}}"></script>
-</head>
-<body>
 
+
+@extends('layouts.base')
+
+@section('title')
+    注册页
+@endsection
+
+@section('content')
+
+<body>
 <div class="login-main">
     <header class="layui-elip" style="width: 82%">注册页</header>
 
@@ -69,7 +66,6 @@
         <p style="width: 85%"><a href="{{url('/admin/login')}}" class="fl">已有账号？立即登录</a><a href="javascript:;" class="fr">忘记密码？</a></p>
     </form>
 </div>
-
 </body>
 
 <script>
@@ -78,8 +74,6 @@
         let layer = layui.layer;
         let form = layui.form;
         let $ = layui.$;
-
-
         //用户名校验
         $('#user').blur(function() {
             let user = $(this).val();
@@ -141,5 +135,4 @@
 
 </script>
 
-
-</html>
+@endsection
