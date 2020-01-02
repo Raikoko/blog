@@ -17,7 +17,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Socialite\Facades\Socialite;
-use mysql_xdevapi\Exception;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use function Psy\debug;
 
@@ -251,7 +250,7 @@ class AdminController extends Controller
             return ['code'=>1,'msg'=>'用户名已存在'];
         }
 
-        $res = User::create($data['account'],$data['password']);
+        $res = User::createUser($data['account'],$data['password']);
         if ($res){
             return ['code'=>0,'msg'=>'注册成功'];
         }

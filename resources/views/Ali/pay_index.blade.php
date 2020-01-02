@@ -28,11 +28,7 @@
             </div>
 
             <div class="layui-input-inline">
-                <button type="button" class="layui-btn type layui-btn-primary" data-type="wechat">微信登录</button>
-            </div>
-
-            <div class="layui-input-inline">
-                <button type="button" class="layui-btn type layui-btn-warm" data-type="QQ">QQ登录</button>
+                <button type="button" class="layui-btn type layui-btn-primary" data-type="app">APP支付</button>
             </div>
 
         </form>
@@ -64,8 +60,11 @@
                         })
                     });
                 },
-                QQ : function () {
-                    window.location.href = "{{url('admin/login_wechat')}}"
+                app : function () {
+                    let id = $('#id').val();
+                    $.post('/ali/aliPayApp',{id:id},function (res) {
+                        location.href = res;
+                    });
                 },
             };
 

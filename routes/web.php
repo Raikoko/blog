@@ -66,6 +66,7 @@ Route::post('/ali/pay_notify','ali\AliPayController@payNotify');   //支付成�
 
 Route::post('/ali/aliPay','ali\AliPayController@aliPay');   //网页支付
 Route::post('/ali/aliPayScan','ali\AliPayController@aliPayScan');   //扫码支付
+Route::post('/ali/aliPayApp','ali\AliPayController@aliPayApp');   //APP支付
 
 
 

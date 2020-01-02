@@ -22,6 +22,9 @@ class User extends Authenticatable implements JWTSubject
     const CREATED_AT = 'create_time';
     const UPDATED_AT = 'update_time';
 
+    protected $fillable = ['username','open_id'];   //可写入参数
+    protected $guarded = [];    //不可写入参数
+
     public function getJWTIdentifier()
     {
         // TODO: Implement getJWTIdentifier() method.
@@ -38,7 +41,7 @@ class User extends Authenticatable implements JWTSubject
     const role_admin = 1;   //管理员
 
 
-    public static function create($username,$password){
+    public static function createUser($username,$password){
         $time = self::getNowDateTime();
         $password_encode = self::encode_password($password);
 
@@ -62,7 +65,8 @@ class User extends Authenticatable implements JWTSubject
             'create_time'=>$time,
             'update_time'=>$time
         ];
-        return DB::table('users')->insert($insert);
+
+        return User::create($insert);
     }
 
     /**

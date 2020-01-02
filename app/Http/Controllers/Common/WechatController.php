@@ -35,6 +35,7 @@ class WechatController extends Controller
     public function callback(){
 //        $user_data = Socialite::with('weixin')->user();
 //        request()->session()->put('state',Str::random(40));
+
         $user_data = Socialite::driver('weixin')->stateless()->user();
 
         if (!isset($user_data->user)){
@@ -42,7 +43,7 @@ class WechatController extends Controller
         }
         $user_info = User::getUserByOpen($user_data->user['openid']);
         if (empty($user_info)){
-            User::createUserByOpen($user_data->user['nickname'],$user_data->user['openid']);
+            $user_info = User::createUserByOpen($user_data->user['nickname'],$user_data->user['openid']);
 //            return $this->error(1,'用户不存在');
         }
         //生成token，跳转到后台首页

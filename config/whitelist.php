@@ -23,6 +23,7 @@ return [
 
         'ali/aliPayScan',   //扫码支付
         'ali/aliPay',       //网页支付
+        'ali/aliPayApp',    //APP支付
 
     ],
     'ip'=>[
