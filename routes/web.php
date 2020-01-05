@@ -70,6 +70,9 @@ Route::post('/ali/aliPayApp','ali\AliPayController@aliPayApp');   //APP支付
 
 
 
+//创建订单
+Route::post('/order/create','order\OrderController@create');   //创建订单
+
 
 
 

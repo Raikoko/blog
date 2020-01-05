@@ -42,8 +42,8 @@ class AliPayController extends Controller
         switch ($trade_status){
             case 'TRADE_SUCCESS':
                 //支付成功，修改订单状态
-                $out_trade_no = '123456';    //订单号
-//                $out_trade_no = $data->out_trade_no;    //订单号
+//                $out_trade_no = '123456';    //订单号
+                $out_trade_no = $data->out_trade_no;    //订单号
                 $trade_no = $data->trade_no;    //支付宝订单号
 
                 $total_amount = $data->total_amount;    //订单总金额
@@ -63,7 +63,9 @@ class AliPayController extends Controller
                 return $res;
 
             case 'TRADE_FINISHED':
-
+                return true;
+            default:
+                return false;
         }
 
     }
@@ -75,8 +77,10 @@ class AliPayController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function aliPay(Request $request){
+
+        $out_trade_no = Order::generateOrderNo();
         $aliPayOder = [
-            'out_trade_no' => time(),   //订单号
+            'out_trade_no' => $out_trade_no,   //订单号
             'total_amount' => 0.01,    //支付金额
             'subject' => '支付宝手机网页支付'    //备注
         ];
@@ -99,9 +103,10 @@ class AliPayController extends Controller
     public function aliPayScan(Request $request){
 
         $id = $request->input('id');
+        $out_trade_no = Order::generateOrderNo();
 
         $aliPayOder = [
-            'out_trade_no' => time(),
+            'out_trade_no' => $out_trade_no,
             'total_amount' => 0.01,    //支付金额
             'subject' => '支付宝扫码支付'    //备注
         ];

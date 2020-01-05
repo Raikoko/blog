@@ -1,8 +1,8 @@
 <?php
 
-//白名单,不需要token的路由
+//白名单
 return [
-
+    //不需要传递token的路由
     'url'=>[
         'admin/login',
         'admin/do_login',
@@ -25,7 +25,11 @@ return [
         'ali/aliPay',       //网页支付
         'ali/aliPayApp',    //APP支付
 
+        'order/create'      //订单创建
+
     ],
+
+    //不需要验证的ip地址
     'ip'=>[
 
     ],
