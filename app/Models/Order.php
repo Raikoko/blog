@@ -4,6 +4,7 @@
 namespace App\Models;
 
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use function GuzzleHttp\Promise\all;
 
@@ -17,6 +18,7 @@ class Order extends Model
 
     //订单状态
     const OrderSuccess = 1;     //订单支付成功状态
+    const OrderWait = 0;     //等待支付
 
 
     const CREATED_AT = 'create_time';
@@ -107,6 +109,7 @@ class Order extends Model
         //总订单的最终价格  算运费并减去优惠卷的价格
         $data['sum_amount_finish'] = '0.01';
         $all_coupon_minus = array_sum(array_column($data['goods_info'],'coupon_minus'));//所有店铺优惠卷的满减金额
+        $data['s_coupon_minus'] = $all_coupon_minus;
         $all_minus =  bcadd($all_coupon_minus,$data['p_coupon_minus'],2); //所有优惠卷的满减金额
         //总订单原始金额大于优惠卷满减金额则相减，不大于则默认支付0.01
         if (bccomp($data['sum_amount_origin'],$all_minus,2)){
@@ -137,6 +140,7 @@ class Order extends Model
             $sum_item_amount_c = '0.00';
             $item_count = count($order_d['item_info']);
             $amount_origin_finish_c = bcsub($amount_origin_finish,$order_d['coupon_minus'],2);//减去店铺优惠卷后的商品总金额
+            $data['goods_info'][$key]['amount_origin_finish_c'] = $amount_origin_finish_c;
             foreach ($order_d['item_info'] as $i_d=>$item_d){
                 //商品原价占子订单的比例   算店铺优惠卷优惠金额
                 $rate_item = bcdiv($item_d['item_amount'],$order_d['amount_origin'],4);
@@ -151,41 +155,67 @@ class Order extends Model
         }
 
         //处理完成，保存订单信息
-        $pay_order_no = self::saveOrderInfo($data);
-
-        //返回生成的支付订单号
-        return $pay_order_no;
+        return self::saveOrderInfo($data);
 
     }
 
-
+    /**
+     * 保存订单信息，并生成支付订单
+     * @param $data
+     * @return bool|false|string
+     */
     public static function saveOrderInfo($data){
 
+        DB::beginTransaction();
+        try {
+            //创建主订单 order_main
+            $pay_order_no = self::generateOrderNo();
+            $main_data = [
+                'pay_order_no'=>$pay_order_no,
+                'amount_origin'=>$data['sum_amount_origin'],
+                'amount_finish'=>$data['sum_amount_finish'],
+                'p_coupon_minus'=>$data['p_coupon_minus'],
+                's_coupon_minus'=>$data['s_coupon_minus'],
+            ];
 
-        //创建主订单 order_main
-        $pay_order_no = self::generateOrderNo();
+            $order_main = OrderMain::createOrderMain($main_data);
 
-
-
-        //循环创建子订单
-        foreach ($data as $k=>$order){
-            //生成订单号
-            $order_no = self::generateOrderNo();
-            //判断订单号是否存在
-            $check_order_no = self::getOrderByNo($order_no);
-            if (!empty($check_order_no)){
-                throw new \Exception('网络错误');
+            //循环创建子订单   按照店铺
+            $orders = [];
+            foreach ($data['goods_info'] as $k=>$order){
+                //生成订单号
+                $order_no = self::generateOrderNo();
+                //判断订单号是否存在
+                $check_order_no = self::getOrderByNo($order_no);
+                if (!empty($check_order_no)){
+                    return false;
+                }
+                //生成子订单
+                $orders[] = [
+                    'order_no'=>$order_no,
+                    'order_main_id'=>$order_main->id,
+                    'order_status'=>self::OrderWait,
+                    'amount_origin'=>$order['amount_origin'],
+                    'amount_finish'=>$order['amount_origin_finish_c'],
+                    'create_time'=>self::getNowDateTime(),
+                    'update_time'=>self::getNowDateTime(),
+                ];
             }
-            $data[$k]['order_no'] = $order_no;
+            //批量添加子订单
+            $add_res = DB::table('orders')->insert($orders);
 
-            //生成子订单
+            //返回最后的订单信息
+            if (!$add_res){
+                return false;
+            }
+            DB::commit();
+            return $pay_order_no;
 
-            //创建子订单与主订单之间关系
-
+        }catch (\Exception $exception){
+            DB::rollBack();
+            return false;
         }
 
-        //返回最后的订单信息
-        return $pay_order_no;
 
     }
 
@@ -205,27 +235,6 @@ class Order extends Model
             return  false;
         }
         return true;
-    }
-
-    /**
-     * 获取订单金额
-     * @param $item_id
-     * @param $num
-     * @param $freight
-     * @param $coupon_id
-     * @return float
-     */
-    public static function getOrderAmount($item_id,$num,$freight,$coupon_id){
-
-        //获取商品信息
-
-        //检测优惠卷能否使用
-
-        //计算金额  金额*数量+运费-优惠金额
-        $amount = '0.01';
-
-        return  $amount;
-
     }
 
     /**
@@ -251,25 +260,30 @@ class Order extends Model
     /**
      * 修改订单状态为成功
      */
-    public static function changeOrderStatusSuccess($order_no,$trade_no){
-        $order_info = Order::getOrderByNo($order_no);
-        if (empty($order_info)){
+    public static function changeOrderStatusSuccess($pay_order_no,$trade_no){
+
+        $order_main_info = OrderMain::getOrderByPayNo($pay_order_no);
+        if (empty($order_main_info)){
             return ['code'=>1,'msg'=>'订单不存在'];
         }
 
         //判断订单状态是否已经修改为支付成功,未修改则修改为支付成功
-        if ($order_info->pay_status == self::PaySuccess && $order_info->order_status == self::OrderSuccess){
+        if ($order_main_info->pay_status == self::PaySuccess){
             return ['code'=>0,'msg'=>'修改成功'];
         }
-        $order_info->order_status = self::OrderSuccess;
-        $order_info->pay_status = self::PaySuccess;
-        Log::info('支付宝订单号修改部分（异步）:'.$trade_no);
-
-        $order_info->pay_no = $trade_no;    //支付宝订单号
-
-        if (!$order_info->save()){
+        $order_main_info->pay_status = self::PaySuccess;
+        $order_main_info->zf_pay_no = $trade_no;    //支付宝订单号
+        if (!$order_main_info->save()){
             return ['code'=>1,'msg'=>'修改失败'];
         }
+        Log::info('主订单修改成功');
+        //修改子订单状态
+        $res = Order::where('order_main_id','=',$order_main_info['id'])->update(['order_status'=>self::OrderSuccess]);
+        Log::info('修改子订单结果'.$res);
+        if (!$res){
+            return ['code'=>1,'msg'=>'修改失败'];
+        }
+        Log::info('子订单修改成功');
         return ['code'=>0,'msg'=>'修改成功'];
     }
 

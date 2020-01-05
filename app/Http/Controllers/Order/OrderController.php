@@ -53,9 +53,8 @@ class OrderController extends Controller
 
         //创建订单，返回支付订单号
         $res = Order::createOrder($data);
-
         if ($res){
-            return $this->success(0,$res);
+            return $this->success(0,['pay_order_id'=>$res]);
         }
         return $this->error();
 

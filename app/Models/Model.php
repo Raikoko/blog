@@ -8,4 +8,8 @@ class Model extends EloquentModel
 {
     //基类Model
 
+
+    public static function getNowDateTime(){
+        return date('Y-m-d H:i:s');
+    }
 }

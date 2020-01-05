@@ -12,7 +12,7 @@
         <form class="layui-form">
             {{csrf_field()}}
             <div class="layui-input-inline">
-                <input type="text" id="id" name="id" required lay-verify="required" placeholder="商品ID" autocomplete="off" class="layui-input">
+                <input type="text" id="id" name="pay_order_no" required lay-verify="required" placeholder="平台支付订单号" autocomplete="off" class="layui-input">
             </div>
             <div class="layui-input-inline">
                 <input type="text" name="amount" required lay-verify="required" placeholder="金额" autocomplete="off" class="layui-input">
