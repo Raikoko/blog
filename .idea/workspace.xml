@@ -2,12 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c988a9ae-2160-4cc8-832e-74ab25772c73" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/Models/OrderMain.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Ali/AliPayController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Ali/AliPayController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Order/OrderController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Order/OrderController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Model.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Model.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Order.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Order.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/alipay.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/alipay.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/Ali/pay_index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/Ali/pay_index.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -232,7 +229,7 @@
       <workItem from="1578030026686" duration="10990000" />
       <workItem from="1578116119207" duration="246000" />
       <workItem from="1578116668684" duration="26371000" />
-      <workItem from="1578203618760" duration="10906000" />
+      <workItem from="1578203618760" duration="11990000" />
     </task>
     <servers />
   </component>

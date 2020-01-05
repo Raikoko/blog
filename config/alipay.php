@@ -4,9 +4,13 @@ return [
         // APPID
         'app_id' => '2016102100731104',
         // 支付宝 支付成功后 主动通知商户服务器地址  注意 是post请求
-        'notify_url' => 'http://raiko.free.idcfengye.com/ali/pay_notify',
+//        'notify_url' => 'http://raiko.free.idcfengye.com/ali/pay_notify',
+        'notify_url' => 'http://raiko.ngrok2.xiaomiqiu.cn/ali/pay_notify',
+
         // 支付宝 支付成功后 回调页面 get
-        'return_url' => 'http://raiko.free.idcfengye.com/ali/pay_success',
+//        'return_url' => 'http://raiko.free.idcfengye.com/ali/pay_success',
+        'return_url' => 'http://raiko.ngrok2.xiaomiqiu.cn/ali/pay_success',
+
         // 公钥（注意是支付宝的公钥，不是商家应用公钥）
         'ali_public_key' => 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAi1qbJKJWIsKDeHP6WCASXa56UF069RdeIZa7xJeygJnCHAdwpGIaHFabqIbjFz87pdprz1GFGvcvE8txT5AKm9Q0/zEBAnQL3mahIkdRg/00WeqgBta72yqGvUH4t2/eLX/CANBZDVTuRD07ZFXMI/+n31Kwu7FZuwPlYod4KewTvHOABVKDfpdpsTVcBMXtD+KOnJYY3UF463B/NSmeIEwFk1rnLRbmv+SYu5EhB5ZuwRp0NRrhxiS16nT1yVbf0KUGzzFcOWOjJEhcZCuvetrzS/IBoxDcme2jPbA/hN/OuiBca1EBMKhJJPySz6Ig1iiDAQQDZ9ntJRUsiuFrjQIDAQAB',
         // 加密方式： **RSA2** 私钥 商家应用私钥

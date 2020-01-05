@@ -105,11 +105,11 @@ class AliPayController extends Controller
     public function aliPayScan(Request $request){
 
         $pay_order_no = $request->input('pay_order_no');
+
         $pay_order = OrderMain::getOrderByPayNo($pay_order_no);
         if (empty($pay_order)){
             $this->error(1,'支付订单号不存在');
         }
-
         $aliPayOder = [
             'out_trade_no' => $pay_order_no,
 //            'total_amount' => $pay_order['amount_finish'],    //支付金额
@@ -125,7 +125,6 @@ class AliPayController extends Controller
         if (empty($scan->code) || $scan->code !== '10000') return false;
 
         $url = $scan->qr_code.'?id'.$pay_order_no;
-
         //生成二维码
         return QrCode::encoding('UTF-8')->size(300)->generate($url);
 

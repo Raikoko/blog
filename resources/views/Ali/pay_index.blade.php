@@ -12,7 +12,7 @@
         <form class="layui-form">
             {{csrf_field()}}
             <div class="layui-input-inline">
-                <input type="text" id="id" name="pay_order_no" required lay-verify="required" placeholder="平台支付订单号" autocomplete="off" class="layui-input">
+                <input type="text" id="id" name="id" required lay-verify="required" placeholder="平台支付订单号" autocomplete="off" class="layui-input">
             </div>
             <div class="layui-input-inline">
                 <input type="text" name="amount" required lay-verify="required" placeholder="金额" autocomplete="off" class="layui-input">
@@ -47,13 +47,13 @@
             let active = {
                 web : function () {
                     let id = $('#id').val();
-                    $.post('/ali/aliPay',{id:id},function (res) {
+                    $.post('/ali/aliPay',{pay_order_no:id},function (res) {
                         $('#web-box').append(res);
                     });
                 },
                 scan : function () {
                     let id = $('#id').val();
-                    $.post('/ali/aliPayScan',{id:id},function (res) {
+                    $.post('/ali/aliPayScan',{pay_order_no:id},function (res) {
                         layer.open({
                             title:'支付宝扫一扫',
                             content:res
@@ -62,7 +62,7 @@
                 },
                 app : function () {
                     let id = $('#id').val();
-                    $.post('/ali/aliPayApp',{id:id},function (res) {
+                    $.post('/ali/aliPayApp',{pay_order_no:id},function (res) {
                         location.href = res;
                     });
                 },
